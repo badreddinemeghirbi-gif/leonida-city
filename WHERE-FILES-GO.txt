@@ -1,0 +1,78 @@
+LEONIDA.CITY — FILE MAP
+=======================
+
+This zip mirrors your project folder exactly.
+Unzip it, then drag these folders INTO your leonida-city project,
+choosing "Merge" / "Replace" when macOS asks.
+
+Do NOT rename anything. Next.js requires the filenames to be page.tsx.
+
+WHAT'S INSIDE
+-------------
+app/
+  globals.css                  (replaces existing)
+  layout.tsx                   (replaces existing)
+  page.tsx                     (replaces existing)  = the home page
+  robots.ts
+  sitemap.ts
+  about/page.tsx               = /about
+  contact/page.tsx             = /contact
+  privacy/page.tsx             = /privacy
+  terms/page.tsx               = /terms
+  locations/page.tsx           = /locations   (grid of all 12)
+  location/[id]/page.tsx       = /location/starfish-island etc
+  api/emails/signup/route.ts   = POST endpoint
+  api/emails/stats/route.ts    = GET endpoint
+
+components/
+  AdUnit.tsx
+  AskAI.tsx
+  Countdown.tsx
+  EmailSignup.tsx
+  InteractiveMap.tsx
+  LoadingScreen.tsx
+  LocationDetail.tsx
+  PageShell.tsx
+  SiteFooter.tsx
+
+data/
+  locations.json
+  guides.json
+
+lib/
+  db.ts
+  rico.ts
+
+store/
+  useStore.ts
+
+
+NOT IN THIS ZIP — do these by hand
+----------------------------------
+1. next.config.ts  -> must contain:
+
+   import type { NextConfig } from 'next';
+   const nextConfig: NextConfig = {
+     serverExternalPackages: ['better-sqlite3'],
+   };
+   export default nextConfig;
+
+2. Replace contact@leonida.city with a real email address in:
+   app/privacy/page.tsx
+   app/terms/page.tsx
+   app/contact/page.tsx
+
+3. Check marker positions in data/locations.json against your map image
+   (the "coordinates" x/y percentages).
+
+
+AFTER UNZIPPING
+---------------
+   Ctrl+C in the terminal, then:
+   npm run dev
+
+   Then open:
+   http://localhost:3000
+   http://localhost:3000/locations
+   http://localhost:3000/location/starfish-island
+   http://localhost:3000/about

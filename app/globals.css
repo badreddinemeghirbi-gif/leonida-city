@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+/* ============================================================
+   LEONIDA.CITY — GLOBAL STYLESHEET
+   Tailwind v4 (uses @theme, NOT tailwind.config.js)
+   If your package.json shows tailwindcss ^3.x, see NOTE at bottom.
+   ============================================================ */
+
+/* ---------- SELF-HOSTED FONT ---------- */
+/* Drop Orbitron-Bold.woff2 in /public/fonts/. If missing, the stack
+   falls back to Inter and nothing breaks visually except the headers. */
+@font-face {
+  font-family: "Orbitron";
+  src: url("/fonts/Orbitron-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- DESIGN TOKENS (Tailwind v4) ----------
+   Namespaced as neon-* so they don't collide with Tailwind's built-in
+   cyan/pink scales. Usage: bg-neon-pink, text-neon-cyan, border-neon-purple */
+@theme {
+  --color-neon-pink: #ff1493;
+  --color-neon-cyan: #00ffff;
+  --color-neon-purple: #a100f2;
+  --color-ink: #ffffff;
+  --color-muted: #e0e0e0;
+  --color-void: #000000;
+
+  --font-display: "Orbitron", "Inter", ui-sans-serif, sans-serif;
+  --font-body: "Inter", "Space Mono", ui-sans-serif, sans-serif;
+}
+
+/* ---------- RAW CSS ALIASES ----------
+   The spec references var(--pink) / var(--cyan) directly in inline styles
+   and in locations.json colors. Keep both naming systems alive. */
+:root {
+  --pink: #ff1493;
+  --cyan: #00ffff;
+  --purple: #a100f2;
+  --bg: #000000;
+  --text: #ffffff;
+  --muted: #e0e0e0;
+
+  --glow-pink: 0 0 10px #ff1493, 0 0 40px rgba(255, 20, 147, 0.4);
+  --glow-cyan: 0 0 10px #00ffff, 0 0 40px rgba(0, 255, 255, 0.4);
+
+  color-scheme: dark;
+}
+
+/* ---------- BASE ---------- */
+html,
+body {
+  background: #000;
+  color: #fff;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+::selection {
+  background: var(--pink);
+  color: #000;
+}
+
+/* Neon scrollbar — used by the location panel and chat */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 255, 0.35) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.35);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 20, 147, 0.6);
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+/* Neon text — pass a color via --tw-glow or use the presets */
+.neon-text {
+  text-shadow: 0 0 10px var(--pink), 0 0 40px rgba(255, 20, 147, 0.4);
+}
+.neon-text-cyan {
+  text-shadow: 0 0 10px var(--cyan), 0 0 40px rgba(0, 255, 255, 0.4);
+}
+
+/* The big "LEONIDA STATE" title: pink → cyan gradient */
+.neon-gradient {
+  background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 50%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(255, 20, 147, 0.45));
+}
+
+/* Interactive element glow borders */
+.neon-border {
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.55), inset 0 0 20px rgba(0, 255, 255, 0.08);
+}
+.neon-border-pink {
+  border: 2px solid var(--pink);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.55), inset 0 0 20px rgba(255, 20, 147, 0.08);
+}
+
+/* Frosted overlay panels (LocationDetail, modals, chat) */
+.glass {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.glass-soft {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Animated grid behind the map */
+.grid-bg {
+  background-image: linear-gradient(rgba(0, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: grid-drift 24s linear infinite;
+}
+
+/* CRT scan-lines over the countdown section */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Map markers */
+.marker-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  animation: marker-pulse 2.4s ease-in-out infinite;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+}
+.marker-dot:hover {
+  transform: scale(1.3);
+}
+.marker-dot[data-active="true"] {
+  transform: scale(1.45);
+  animation: none;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--pink);
+  color: #000;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 24px rgba(255, 20, 147, 0.8);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+.btn-ghost:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+}
+
+/* Slot reserved for AdSense — prevents CLS */
+.ad-slot {
+  min-height: 90px;
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes marker-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px currentColor);
+    opacity: 0.85;
+  }
+  50% {
+    filter: drop-shadow(0 0 16px currentColor);
+    opacity: 1;
+  }
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 48px 48px, 48px 48px;
+  }
+}
+
+@keyframes glow-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(255, 20, 147, 0.75);
+  }
+}
+.animate-breathe {
+  animation: glow-breathe 3s ease-in-out infinite;
+}
+
+/* Respect OS-level reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   NOTE — TAILWIND v3 FALLBACK
+   If `npm ls tailwindcss` shows 3.x, replace line 1 with:
+
+     @tailwind base;
+     @tailwind components;
+     @tailwind utilities;
+
+   ...delete the @theme block, and put the colors in
+   tailwind.config.ts under theme.extend.colors instead.
+   Everything below the @theme block works unchanged in both versions.
+   ============================================================ */

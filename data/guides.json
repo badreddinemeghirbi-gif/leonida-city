@@ -1,0 +1,218 @@
+{
+  "starfish-island": {
+    "whatToExpect": [
+      "Gated causeway access — the only way on or off is watched",
+      "Waterfront compounds with private docks behind every hedge",
+      "The highest concentration of money and the lowest concentration of witnesses in Leonida"
+    ],
+    "insiderNotes": "Starfish Island reads as the quietest place in Vice City, and that is precisely the problem with it. The streets are wide, the lawns are cut, and nobody is ever outside. Wealth here isn't spent loudly — it's spent on distance from consequences. Residents move between the compound, the boat, and the airstrip without ever touching a public road. If you want to understand who actually runs Leonida, you don't look Downtown at the glass towers. You look at who owns the third house from the bridge, and then you look at who owns the company that owns it, and then you stop looking, because that's about as far as anyone gets.",
+    "faq": [
+      {
+        "q": "Can you drive onto Starfish Island freely?",
+        "a": "In past entries in the series the island has been connected by causeway and open to traffic, with the exclusivity coming from the properties rather than a hard barrier. How Rockstar handles access this time hasn't been shown."
+      },
+      {
+        "q": "Why does Starfish Island matter to the story?",
+        "a": "Islands like this one have historically served as the endgame real estate of the series — the place a protagonist ends up owning if things go well. Treat it as an aspiration marker rather than an early-game destination."
+      }
+    ]
+  },
+  "downtown-vice-city": {
+    "whatToExpect": [
+      "Dense vertical streets — the most claustrophobic driving in the city",
+      "Corporate towers, the VCN broadcast building, and the financial district core",
+      "A completely different character by day and by night"
+    ],
+    "insiderNotes": "Downtown is where Leonida performs legitimacy. Everything shady that happens elsewhere in the state eventually gets laundered through an office here, signed off by someone with a good haircut and a view of the bay. For anyone learning the map, Downtown is also the hardest area to navigate at speed — the grid is tight, the one-way streets are hostile, and helicopters have an easier time than cars. Learn two or three reliable north-south routes early and you'll save yourself a lot of grief later. The area rewards players who slow down, which is not a sentence you get to write about much else in this series.",
+    "faq": [
+      {
+        "q": "Is Downtown the center of the map?",
+        "a": "Vice City is the urban heart of the state of Leonida, and Downtown is the densest part of it — but the state extends well beyond the city into coastline, wetland, and smaller towns."
+      },
+      {
+        "q": "What makes Downtown different at night?",
+        "a": "The neon aesthetic the series is known for is at its most concentrated here. Expect the lighting model to be doing most of the heavy visual lifting after dark."
+      }
+    ]
+  },
+  "ocean-beach": {
+    "whatToExpect": [
+      "Art deco hotel frontage along the main strip",
+      "Beachfront pedestrian traffic — the busiest foot crowds in the city",
+      "Easy coastal driving with long uninterrupted stretches"
+    ],
+    "insiderNotes": "Ocean Beach is the postcard, and it knows it. This is the stretch that ends up in every trailer, every screenshot, and every wallpaper — pastel facades, palm lines, and light that looks unreasonable. What makes it interesting beyond the surface is the friction underneath: this is a neighborhood being priced out of itself in real time, which gives it the kind of tension the series usually does well. For practical purposes, the beachfront road is one of the better high-speed routes in the city, and the density of pedestrians makes it one of the worse places to attract police attention. Beautiful and inconvenient, in roughly equal measure.",
+    "faq": [
+      {
+        "q": "Is Ocean Beach based on a real place?",
+        "a": "The Vice City coastline has always drawn heavily on South Beach in Miami — the art deco district in particular. Expect recognizable silhouettes rather than direct copies."
+      },
+      {
+        "q": "Is this a good area for early-game activity?",
+        "a": "Coastal districts tend to be accessible early and heavy on side content. It's a reasonable place to learn the map's geography."
+      }
+    ]
+  },
+  "the-malls": {
+    "whatToExpect": [
+      "Interior retail space — one of the few large indoor environments",
+      "Multi-level parking structures with poor sightlines",
+      "Concentrated shops, food courts, and pedestrian crowds"
+    ],
+    "insiderNotes": "Interiors are expensive to build and the series has historically been selective about them, so a fully realized mall district is worth paying attention to. Enclosed spaces change how encounters work — no helicopters, no long sightlines, and escape routes that can be closed off. If the game leans into that, The Malls becomes tactically distinct from anywhere else on the map. The parking structures are the part most worth scouting. Multi-level concrete with limited exits is either the best place in the city to lose a tail or the worst place to be caught in one, depending entirely on whether you already know where the ramps come out.",
+    "faq": [
+      {
+        "q": "Can you go inside the malls?",
+        "a": "Interior access hasn't been detailed. The series has included enterable shops before, usually a curated selection rather than every storefront."
+      },
+      {
+        "q": "Is there a real-world equivalent?",
+        "a": "Large enclosed malls are a fixture of South Florida suburbia, and the series has featured a North Point Mall in Vice City previously."
+      }
+    ]
+  },
+  "prawn-island": {
+    "whatToExpect": [
+      "Derelict industrial and studio buildings",
+      "Poor lighting and narrow approach roads",
+      "Isolation — a small island with limited access points"
+    ],
+    "insiderNotes": "Prawn Island has always functioned as the map's rough edge: close enough to the city to be useful, isolated enough to be ignored. Abandoned production facilities give level designers exactly what they want — vertical interiors, cover, and sightlines that break — which is why locations like this tend to host set-piece missions rather than ambient activity. Going there without a reason is how the evening gets away from you. Going there with one is how a lot of stories in this series start. Either way, know your exit before you cross the bridge, because there aren't many and they're easy to block.",
+    "faq": [
+      {
+        "q": "Why is Prawn Island associated with the film industry?",
+        "a": "In the series' Vice City history the island housed a film studio, which is where the association comes from. Whether that carries forward is unconfirmed."
+      },
+      {
+        "q": "Is it dangerous to go there?",
+        "a": "Within the fiction, it's presented as the kind of place where the absence of witnesses is the main attraction. Mechanically, that usually means higher-tier enemies."
+      }
+    ]
+  },
+  "vice-point": {
+    "whatToExpect": [
+      "High-rise residential towers along the shoreline",
+      "Newer construction than the historic beach districts",
+      "Marina access and waterfront property"
+    ],
+    "insiderNotes": "Vice Point is the newer money answer to Starfish Island's older money. The distinction matters in this series, which has always been sharp about class texture: old money hides, new money advertises. Expect glass balconies, visible luxury vehicles, and people who very much want to be seen having arrived. For navigation purposes, the northern residential stretch tends to be quieter and faster to drive than anything south of it, which makes it useful as a through-route even when you have no business there. The marina is worth noting separately — water access changes your options considerably when land routes get complicated.",
+    "faq": [
+      {
+        "q": "How is Vice Point different from Ocean Beach?",
+        "a": "Ocean Beach is the historic art deco strip; Vice Point reads as newer, taller, and more residential. Different eras of the same coastline."
+      },
+      {
+        "q": "Is there property to buy here?",
+        "a": "Property ownership has appeared in previous entries in the series. Nothing has been confirmed for this one."
+      }
+    ]
+  },
+  "viceport-harbor": {
+    "whatToExpect": [
+      "Container stacks, cranes, and working dock infrastructure",
+      "Heavy vehicles and industrial traffic patterns",
+      "Water access to the rest of the coastline"
+    ],
+    "insiderNotes": "Every open-world map needs a port, and the port is always where the interesting logistics live. Containers are opaque by design — that's the entire point of a container — which makes a working harbor the most narratively convenient place in any crime story. Practically speaking, dock districts are excellent for vehicle variety and terrible for quick escapes: the roads are wide but the routes are few, and a single blocked gate turns the whole area into a maze. Learn where the water access is. In a district built around boats, the answer to most problems is a boat.",
+    "faq": [
+      {
+        "q": "Can you use boats from the harbor?",
+        "a": "Watercraft have been a series staple in coastal settings. A working harbor is the natural place for them, though specific spawn points aren't known."
+      },
+      {
+        "q": "Is Viceport a real Miami location?",
+        "a": "PortMiami is the obvious real-world reference point — a major container and cruise facility adjacent to the downtown core."
+      }
+    ]
+  },
+  "washington-beach": {
+    "whatToExpect": [
+      "Nightlife strip with clubs and bars as the main draw",
+      "Peak activity after dark rather than during the day",
+      "Heavy pedestrian density and visible police presence"
+    ],
+    "insiderNotes": "Washington Beach is the going-out district, and going-out districts in this series have historically been where the ambient world does its best work — crowds, music, arguments spilling onto sidewalks, the general sense that things are happening whether or not you're involved. The police presence here is worth reading carefully: high visibility in tourist areas is usually about reassurance rather than enforcement, which is a distinction the series enjoys making. If the game models club interiors, this is where they'll be. If it doesn't, this is still the best place on the map to simply stand still and watch the world run.",
+    "faq": [
+      {
+        "q": "Is Washington Beach separate from Ocean Beach?",
+        "a": "They've been adjacent districts along the same stretch of coastline in the series' Vice City. Washington Beach has historically read as the more nightlife-oriented of the two."
+      },
+      {
+        "q": "Are there enterable clubs?",
+        "a": "Unconfirmed. The series has included enterable nightlife venues before, usually a small curated number."
+      }
+    ]
+  },
+  "little-havana": {
+    "whatToExpect": [
+      "Low-rise streets with dense storefronts and street-level detail",
+      "Murals, cafés, and the most pedestrian-scale neighborhood on the map",
+      "Tight roads that punish high-speed driving"
+    ],
+    "insiderNotes": "Little Havana is the district most likely to carry the game's cultural weight, and it's the one worth walking rather than driving. Neighborhoods built at pedestrian scale are where open-world detail work actually shows — signage, shopfronts, the texture of a place that people live in rather than pass through. The community-versus-development tension the fiction sets up here is the kind of thread the series has used well before, usually as the emotional backbone under whatever heist is happening on top of it. Narrow streets also mean it's a poor choice for a chase and a good choice for losing one on foot.",
+    "faq": [
+      {
+        "q": "Is Little Havana based on the real Miami neighborhood?",
+        "a": "Yes — Miami's Little Havana is a well-known Cuban-American neighborhood, and the series has featured a version of it in Vice City previously."
+      },
+      {
+        "q": "What kind of content is likely here?",
+        "a": "Street-level, character-driven content tends to cluster in districts like this. Expect side activity and story beats over large set pieces."
+      }
+    ]
+  },
+  "escobar-international": {
+    "whatToExpect": [
+      "Terminals, runways, and cargo facilities",
+      "Aircraft access — the most likely place to find planes",
+      "Wide open space with long sightlines, unusual for the city"
+    ],
+    "insiderNotes": "Airports serve two purposes in this series: they're where the aircraft are, and they're where the map tends to put its higher-security areas. Both are worth knowing early. Restricted airspace and fenced perimeters usually mean an escalated police response, which makes the airport a good place to test how the wanted system actually behaves before you need to know under pressure. The cargo side is the more interesting half narratively — freight terminals move volume with paperwork nobody reads, and the fiction leans on that. The passenger side is mostly geography. Useful geography, but geography.",
+    "faq": [
+      {
+        "q": "Can you fly planes from Escobar International?",
+        "a": "Aircraft have been available in previous entries, typically gated behind progression. Nothing specific has been confirmed here."
+      },
+      {
+        "q": "Does entering the airport raise a wanted level?",
+        "a": "Restricted zones triggering police response is a long-running series mechanic. Whether it applies here is unconfirmed."
+      }
+    ]
+  },
+  "leaf-links": {
+    "whatToExpect": [
+      "Open manicured terrain — a rare break from urban density",
+      "Clubhouse and private facilities with restricted access",
+      "Golf carts and slow-moving vehicles"
+    ],
+    "insiderNotes": "A golf course is a strange thing to put in a crime game, and the series keeps doing it because it works. Open ground with no cover, wide sightlines, and a membership list that reads like an indictment — it's the inverse of every other space on the map. Whatever happens at Leaf Links happens in the open, watched by people who will say they saw nothing. The fiction positions it as the place where the state's real decisions get made, which tracks: the actual power in any city tends to be exercised somewhere with a dress code, not somewhere with a lookout.",
+    "faq": [
+      {
+        "q": "Is golf playable?",
+        "a": "Golf has appeared as a playable minigame in the series before. Its inclusion here hasn't been confirmed."
+      },
+      {
+        "q": "Was Leaf Links in the original Vice City?",
+        "a": "A course by that name has featured in the series' Vice City. How closely this version relates to it isn't known."
+      }
+    ]
+  },
+  "rockstar-island": {
+    "whatToExpect": [
+      "Restricted access — no standard road connection",
+      "A single private compound rather than a neighborhood",
+      "The least documented location on the map"
+    ],
+    "insiderNotes": "Every Rockstar map has a place players decide is a secret before anyone confirms there's anything there, and inaccessible islands attract that energy faster than anything else. Treat everything you read about this one — including what's written here — as fan speculation rather than fact. That's not a disclaimer so much as the entire appeal: the empty space on a map is where a community does its best work, and the theories are usually more interesting than whatever gets found. If it turns out to be a texture-mapped rock with nothing on it, that will also be extremely in keeping with tradition.",
+    "faq": [
+      {
+        "q": "Is Rockstar Island a confirmed location?",
+        "a": "No. This entry is fan speculation, included because inaccessible islands have historically generated significant community interest. Nothing official confirms it."
+      },
+      {
+        "q": "Can you reach it?",
+        "a": "Unknown, and unknowable until the game is out. Community mapping efforts usually resolve questions like this within days of release."
+      }
+    ]
+  }
+}
