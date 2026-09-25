@@ -24,6 +24,8 @@ const SOCIALS = [
 const NAV = [
   ['/map', 'Map'],
   ['/locations', 'Locations'],
+  ['/news', 'News'],
+  ['/forum', 'Forum'],
   ['/gallery', 'Gallery'],
   ['/cheats', 'Cheats'],
   ['/about', 'About'],

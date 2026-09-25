@@ -69,7 +69,7 @@ export default function GalleryBrowser({ albums }: { albums: Album[] }) {
   return (
     <>
       {/* Type filter */}
-      <div className="mb-3 flex flex-wrap gap-2">
+      <div className="chip-row mb-3 flex flex-wrap gap-2">
         {(['all', 'photo', 'video'] as const).map((t) => (
           <button key={t} onClick={() => setType(t)} className={chip(type === t)}>
             {t === 'all' ? 'Everything' : t === 'photo' ? 'Photos' : 'Videos'}
@@ -78,7 +78,7 @@ export default function GalleryBrowser({ albums }: { albums: Album[] }) {
       </div>
 
       {/* Album filter */}
-      <div className="mb-8 flex flex-wrap gap-2">
+      <div className="chip-row mb-8 flex flex-wrap gap-2">
         <button onClick={() => setAlbum('all')} className={chip(album === 'all')}>
           All albums
         </button>
@@ -98,7 +98,7 @@ export default function GalleryBrowser({ albums }: { albums: Album[] }) {
       </p>
 
       {/* Masonry */}
-      <div className="columns-2 gap-4 md:columns-3 [&>*]:mb-4">
+      <div className="columns-1 gap-4 sm:columns-2 md:columns-3 [&>*]:mb-4">
         {items.slice(0, visible).map((item, i) => (
           <motion.button
             key={item.src}
@@ -107,7 +107,7 @@ export default function GalleryBrowser({ albums }: { albums: Album[] }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: Math.min(i, 8) * 0.03 }}
             onClick={() => setOpen(i)}
-            className="group relative block w-full break-inside-avoid overflow-hidden rounded-lg border border-white/10 transition hover:border-[var(--cyan)]"
+            className="group relative block w-full break-inside-avoid overflow-hidden rounded-lg border border-white/10 bg-[#0a0a0a] transition hover:border-[var(--cyan)]"
           >
             {item.type === 'photo' ? (
               <Image
@@ -115,7 +115,8 @@ export default function GalleryBrowser({ albums }: { albums: Album[] }) {
                 alt={item.caption}
                 width={600}
                 height={800}
-                sizes="(max-width: 768px) 50vw, 33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                quality={72}
                 loading={i < 6 ? 'eager' : 'lazy'}
                 className="h-auto w-full transition duration-500 group-hover:scale-[1.03]"
               />

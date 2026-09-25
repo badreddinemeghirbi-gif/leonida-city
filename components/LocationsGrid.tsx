@@ -16,7 +16,7 @@ export default function LocationsGrid({ limit }: { limit?: number }) {
           href={`/location/${loc.id}`}
           className="group overflow-hidden rounded-xl border border-white/10 transition duration-300 hover:border-[var(--cyan)] hover:shadow-[0_0_24px_rgba(0,255,255,0.25)]"
         >
-          <div className="relative aspect-[4/3] overflow-hidden">
+          <div className="relative aspect-[4/3] overflow-hidden bg-[#0a0a0a]">
             <Image
               src={loc.cardThumbnail}
               alt={loc.name}
@@ -24,6 +24,7 @@ export default function LocationsGrid({ limit }: { limit?: number }) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={i < 3}
               loading={i < 3 ? undefined : 'lazy'}
+              quality={70}
               className="object-cover transition duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />

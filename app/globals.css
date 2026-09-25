@@ -280,3 +280,101 @@ h3,
    tailwind.config.ts under theme.extend.colors instead.
    Everything below the @theme block works unchanged in both versions.
    ============================================================ */
+
+/* ============================================================
+   ADSENSE — unfilled slots render as blank WHITE boxes until
+   your account is approved. Hide them and collapse the space.
+   ============================================================ */
+ins.adsbygoogle {
+  background: transparent !important;
+}
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+.ad-slot:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
+  display: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+/* ============================================================
+   MOBILE
+   Desktop layout is untouched — everything here is <=640px
+   ============================================================ */
+
+/* Never let an image flash white while it loads */
+img {
+  background-color: #0a0a0a;
+}
+
+@media (max-width: 640px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    /* Clear the notch and the home indicator */
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Tighter rhythm — desktop spacing wastes half a phone screen */
+  h1.font-display {
+    font-size: 1.85rem;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+  h2.font-display {
+    font-size: 1.3rem;
+  }
+
+  footer {
+    margin-top: 3.5rem;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Every tap target at least 44px — Apple's minimum */
+  button,
+  a[role='button'],
+  .btn-primary,
+  .btn-ghost {
+    min-height: 44px;
+  }
+
+  /* Filter chip rows scroll sideways instead of wrapping into
+     four tall lines that push content off screen */
+  .chip-row {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .chip-row::-webkit-scrollbar {
+    display: none;
+  }
+  .chip-row > * {
+    flex: 0 0 auto;
+  }
+
+  /* Inputs at 16px stop iOS zooming the whole page on focus */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  /* Keep the chat button clear of the home indicator */
+  .chat-fab {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  h1.font-display {
+    font-size: 1.6rem;
+  }
+}

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import rawLocations from '@/data/locations.json';
+import { getArticles } from '@/lib/news';
 import type { Location } from '@/store/useStore';
 
 const locations = rawLocations as Location[];
@@ -18,6 +19,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     })),
+    { url: `${BASE}/news`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+    ...getArticles().map((a) => ({
+      url: `${BASE}/news/${a.slug}`,
+      lastModified: new Date(a.updated ?? a.date),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    })),
+    { url: `${BASE}/forum`, lastModified: now, changeFrequency: 'hourly', priority: 0.7 },
     { url: `${BASE}/gallery`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${BASE}/cheats`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },

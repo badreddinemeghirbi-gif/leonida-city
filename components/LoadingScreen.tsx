@@ -103,7 +103,7 @@ export default function LoadingScreen() {
       {!failed && (
         <video
           ref={videoRef}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain sm:object-cover"
           src={INTRO_VIDEO}
           autoPlay
           muted
@@ -179,7 +179,8 @@ export default function LoadingScreen() {
           <button
             onClick={toggleMute}
             aria-label={muted ? 'Unmute intro' : 'Mute intro'}
-            className="btn-ghost absolute bottom-6 left-6 rounded-md px-4 py-2 text-xs"
+            className="btn-ghost absolute left-4 rounded-md px-4 py-2 text-xs sm:left-6"
+            style={{ bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
           >
             {muted ? '🔇 Unmute' : '🔊 Mute'}
           </button>
@@ -193,7 +194,8 @@ export default function LoadingScreen() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="btn-ghost absolute bottom-6 right-6 rounded-md px-5 py-2.5 text-xs sm:text-sm"
+                className="btn-ghost absolute right-4 rounded-md px-5 py-2.5 text-xs sm:right-6 sm:text-sm"
+                style={{ bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
               >
                 Skip Intro →
               </motion.button>

@@ -9,6 +9,8 @@ const NAV = [
   { href: '/', label: 'Home' },
   { href: '/map', label: 'Map' },
   { href: '/locations', label: 'Locations' },
+  { href: '/news', label: 'News' },
+  { href: '/forum', label: 'Forum' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/cheats', label: 'Cheats' },
   { href: '/about', label: 'About' },
