@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
     const type: SignupType = VALID_TYPES.includes(signupType) ? signupType : 'both';
 
-    addEmail(email, type);
+    await addEmail(email, type);
 
     return NextResponse.json({ ok: true });
   } catch (err) {
