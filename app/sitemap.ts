@@ -18,6 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     })),
+    { url: `${BASE}/gallery`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE}/cheats`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${BASE}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },

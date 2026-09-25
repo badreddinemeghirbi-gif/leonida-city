@@ -1,0 +1,13 @@
+{
+  "_readme": "Optional. Folders in public/gallery/ work without any entry here — this file only overrides the auto-generated title. Key = folder name.",
+
+  "2026-09-25": {
+    "title": "Night Drive",
+    "description": "Neon-soaked streets after midnight."
+  },
+
+  "characters": {
+    "title": "Faces of Leonida",
+    "description": "The people who make Vice City what it is."
+  }
+}

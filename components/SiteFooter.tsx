@@ -6,6 +6,8 @@ export default function SiteFooter() {
       <nav className="mb-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs uppercase tracking-[0.2em] text-white/45">
         <Link href="/map" className="transition hover:text-[var(--cyan)]">Map</Link>
         <Link href="/locations" className="transition hover:text-[var(--cyan)]">Locations</Link>
+        <Link href="/gallery" className="transition hover:text-[var(--cyan)]">Gallery</Link>
+        <Link href="/cheats" className="transition hover:text-[var(--cyan)]">Cheats</Link>
         <Link href="/about" className="transition hover:text-[var(--cyan)]">About</Link>
         <Link href="/contact" className="transition hover:text-[var(--cyan)]">Contact</Link>
         <Link href="/privacy" className="transition hover:text-[var(--cyan)]">Privacy</Link>

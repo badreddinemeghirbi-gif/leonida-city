@@ -9,6 +9,9 @@ export default function LocationMedia({ location }: { location: Location }) {
   const [tab, setTab] = useState<'video' | 'photos'>('video');
   const [playing, setPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [buffering, setBuffering] = useState(false);
+  // Measured from the file itself so vertical clips aren't cropped on phones
+  const [ratio, setRatio] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const photos = [
@@ -56,19 +59,40 @@ export default function LocationMedia({ location }: { location: Location }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-black"
+            className="relative mx-auto w-full overflow-hidden rounded-xl border border-white/10 bg-black"
+            style={{
+              aspectRatio: playing && ratio ? ratio : 16 / 9,
+              maxHeight: '75vh',
+            }}
           >
             {playing && !videoFailed ? (
-              <video
-                src={location.heroVideo}
-                poster={location.heroImage}
-                className="h-full w-full object-cover"
-                controls
-                autoPlay
-                playsInline
-                preload="metadata"
-                onError={() => setVideoFailed(true)}
-              />
+              <>
+                <video
+                  src={location.heroVideo}
+                  poster={location.heroImage}
+                  className="h-full w-full object-contain"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                  onLoadedMetadata={(e) =>
+                    setRatio(
+                      e.currentTarget.videoWidth / e.currentTarget.videoHeight
+                    )
+                  }
+                  onWaiting={() => setBuffering(true)}
+                  onPlaying={() => setBuffering(false)}
+                  onCanPlay={() => setBuffering(false)}
+                  onError={() => setVideoFailed(true)}
+                />
+                {buffering && (
+                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/40">
+                    <span className="font-display animate-pulse text-[10px] uppercase tracking-[0.4em] text-[var(--cyan)]">
+                      Loading
+                    </span>
+                  </span>
+                )}
+              </>
             ) : (
               <>
                 {/* The poster is a normal optimized image until you press play —

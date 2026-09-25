@@ -1,0 +1,31 @@
+{
+  "status": "pending",
+  "lastUpdated": "",
+  "note": "Set status to 'live' once you have real codes. While it's 'pending' the page shows the waiting state and hides the table.",
+  "categories": [
+    "Weapons",
+    "Health & Armor",
+    "Vehicles",
+    "Wanted Level",
+    "World & Weather",
+    "Player Effects",
+    "Movement",
+    "Spawn"
+  ],
+  "codes": [
+    {
+      "id": "example-delete-me",
+      "name": "EXAMPLE — delete this entry",
+      "description": "Copy this block's shape for every real cheat you add. Leave a platform empty if the code doesn't exist there.",
+      "category": "Weapons",
+      "effect": "Gives the player a full weapon loadout",
+      "codes": {
+        "playstation": "R1, R2, L1, R2, LEFT, DOWN, RIGHT, UP",
+        "xbox": "RB, RT, LB, RT, LEFT, DOWN, RIGHT, UP",
+        "pc": "TOOLUP"
+      },
+      "verified": false,
+      "source": ""
+    }
+  ]
+}
