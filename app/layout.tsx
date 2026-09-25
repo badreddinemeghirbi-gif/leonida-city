@@ -15,8 +15,8 @@ const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 export const metadata: Metadata = {
   metadataBase: new URL('https://leonida.city'),
   title: {
-    default: 'LEONIDA.CITY — Your Vice City Companion | GTA 6',
-    template: '%s | LEONIDA.CITY',
+    default: 'Lonida City | GTA 6',
+    template: '%s | Leonida City',
   },
   description:
     'Explore Vice City like never before. Interactive map, location lore, AI guide, countdown timer, and exclusive GTA 6 content.',
