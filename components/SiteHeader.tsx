@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 const NAV = [
   { href: '/', label: 'Home' },
@@ -42,17 +43,16 @@ export default function SiteHeader() {
     >
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 sm:px-8">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-2">
-          <span
-            className="font-display neon-gradient text-lg font-bold tracking-wider sm:text-xl"
-            style={{ transition: 'filter .3s' }}
-          >
-            LEONIDA
-          </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.3em] text-white/30 sm:inline">
-            .city
-          </span>
-        </Link>
+        <Link href="/" className="flex items-center">
+  <Image
+    src="/images/logo.png"
+    alt="LEONIDA.CITY"
+    width={160}
+    height={40}
+    priority
+    className="h-8 w-auto sm:h-10"
+  />
+</Link>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
