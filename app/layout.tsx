@@ -55,9 +55,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteFooter />
         <ClientChrome />
         <Analytics />
-        <SiteFooter />
-        <ClientChrome />
-        <Analytics />
         {ADSENSE_CLIENT && (
           <Script
             async
