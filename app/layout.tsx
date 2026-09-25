@@ -5,6 +5,8 @@ import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import ClientChrome from '@/components/ClientChrome';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
+
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -52,7 +54,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex-1">{children}</div>
         <SiteFooter />
         <ClientChrome />
-
+        <Analytics />
+        <SiteFooter />
+        <ClientChrome />
+        <Analytics />
         {ADSENSE_CLIENT && (
           <Script
             async
