@@ -1,0 +1,27 @@
+{
+  "status": "pending",
+  "lastUpdated": "",
+  "note": "Set status to 'live' once real mission data exists. While it's 'pending' the page shows the waiting state.",
+  "chapters": ["Prologue", "Chapter 1", "Chapter 2", "Chapter 3", "Finale", "Side Missions", "Strangers"],
+  "missions": [
+    {
+      "id": "example-delete-me",
+      "name": "EXAMPLE — delete this entry",
+      "chapter": "Chapter 1",
+      "givenBy": "Who hands you the job",
+      "location": "starfish-island",
+      "summary": "One or two sentences on what happens, spoiler-light.",
+      "objectives": [
+        "First objective",
+        "Second objective"
+      ],
+      "goldMedal": [
+        "Time: finish under 4:30",
+        "Accuracy: 70%",
+        "Headshots: 8"
+      ],
+      "unlocks": "What becomes available afterwards",
+      "verified": false
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { createClient } from '@libsql/client';
+import { ensureUserSchema } from '@/lib/users';
 
 const client = createClient({
   url: process.env.TURSO_DATABASE_URL ?? '',
@@ -9,197 +10,259 @@ let ready: Promise<unknown> | null = null;
 async function ensureSchema() {
   if (!ready) {
     ready = (async () => {
+      await ensureUserSchema();
       await client.execute(`
         CREATE TABLE IF NOT EXISTS forum_posts (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           author_id TEXT NOT NULL,
-          author_name TEXT NOT NULL,
+          title TEXT NOT NULL,
           body TEXT NOT NULL,
           tag TEXT NOT NULL DEFAULT 'General',
           created_at TEXT DEFAULT (datetime('now')),
-          hidden INTEGER DEFAULT 0
+          hidden INTEGER DEFAULT 0,
+          pinned INTEGER DEFAULT 0
         )`);
       await client.execute(`
         CREATE TABLE IF NOT EXISTS forum_comments (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           post_id INTEGER NOT NULL,
           author_id TEXT NOT NULL,
-          author_name TEXT NOT NULL,
           body TEXT NOT NULL,
           created_at TEXT DEFAULT (datetime('now')),
           hidden INTEGER DEFAULT 0
         )`);
       await client.execute(`
-        CREATE TABLE IF NOT EXISTS forum_likes (
+        CREATE TABLE IF NOT EXISTS forum_votes (
           post_id INTEGER NOT NULL,
-          author_id TEXT NOT NULL,
-          PRIMARY KEY (post_id, author_id)
+          user_id TEXT NOT NULL,
+          PRIMARY KEY (post_id, user_id)
+        )`);
+      await client.execute(`
+        CREATE TABLE IF NOT EXISTS forum_reports (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          post_id INTEGER,
+          comment_id INTEGER,
+          reporter_id TEXT NOT NULL,
+          created_at TEXT DEFAULT (datetime('now'))
         )`);
     })();
   }
   return ready;
 }
 
-export const TAGS = ['General', 'Theories', 'Leaks', 'Gameplay', 'Art', 'Off-topic'];
+export const TAGS = ['General', 'Theories', 'Leaks', 'Gameplay', 'Art', 'Help'];
 
 export const LIMITS = {
-  postBody: 1000,
-  commentBody: 500,
-  name: 24,
-  postsPerHour: 5,
-  commentsPerHour: 20,
+  title: 120,
+  body: 4000,
+  comment: 1000,
+  postsPerHour: 6,
+  commentsPerHour: 30,
 };
 
 export type Post = {
   id: number;
   author_id: string;
-  author_name: string;
+  handle: string;
+  avatar: string | null;
+  title: string;
   body: string;
   tag: string;
   created_at: string;
-  likes: number;
+  votes: number;
   comments: number;
+  pinned: number;
 };
 
 export type Comment = {
   id: number;
   post_id: number;
-  author_name: string;
+  author_id: string;
+  handle: string;
+  avatar: string | null;
   body: string;
   created_at: string;
 };
 
-/** Returns how many of this author's items landed in the last hour */
-async function recentCount(table: 'forum_posts' | 'forum_comments', authorId: string) {
-  await ensureSchema();
+const SELECT_POST = `
+  SELECT p.id, p.author_id, u.handle, u.avatar, p.title, p.body, p.tag,
+         p.created_at, p.pinned,
+         (SELECT COUNT(*) FROM forum_votes v WHERE v.post_id = p.id) AS votes,
+         (SELECT COUNT(*) FROM forum_comments c
+           WHERE c.post_id = p.id AND c.hidden = 0) AS comments
+    FROM forum_posts p
+    JOIN forum_users u ON u.id = p.author_id
+`;
+
+async function rateCheck(table: 'forum_posts' | 'forum_comments', userId: string, max: number) {
   const res = await client.execute({
     sql: `SELECT COUNT(*) AS n FROM ${table}
           WHERE author_id = ? AND created_at > datetime('now','-1 hour')`,
-    args: [authorId],
+    args: [userId],
   });
-  return Number(res.rows[0]?.n ?? 0);
+  if (Number(res.rows[0]?.n ?? 0) >= max) {
+    throw new Error("You've posted a lot in the last hour. Give it a few minutes.");
+  }
 }
 
-export async function listPosts(sort: 'new' | 'top' = 'new', tag?: string) {
+export async function listPosts(sort: 'new' | 'top' | 'hot' = 'hot', tag?: string) {
   await ensureSchema();
 
   const where = tag && tag !== 'All' ? 'AND p.tag = ?' : '';
-  const order = sort === 'top' ? 'likes DESC, p.id DESC' : 'p.id DESC';
+
+  /* "hot" = votes decayed by age, the classic ranking shape */
+  const order =
+    sort === 'top'
+      ? 'votes DESC, p.id DESC'
+      : sort === 'new'
+        ? 'p.id DESC'
+        : `(votes * 1.0) / (((julianday('now') - julianday(p.created_at)) * 24 + 2) ) DESC, p.id DESC`;
 
   const res = await client.execute({
-    sql: `SELECT p.id, p.author_id, p.author_name, p.body, p.tag, p.created_at,
-            (SELECT COUNT(*) FROM forum_likes l WHERE l.post_id = p.id) AS likes,
-            (SELECT COUNT(*) FROM forum_comments c WHERE c.post_id = p.id AND c.hidden = 0) AS comments
-          FROM forum_posts p
-          WHERE p.hidden = 0 ${where}
-          ORDER BY ${order}
-          LIMIT 100`,
+    sql: `${SELECT_POST} WHERE p.hidden = 0 ${where}
+          ORDER BY p.pinned DESC, ${order} LIMIT 60`,
     args: tag && tag !== 'All' ? [tag] : [],
   });
 
   return res.rows as unknown as Post[];
 }
 
+export async function getPost(id: number) {
+  await ensureSchema();
+  const res = await client.execute({
+    sql: `${SELECT_POST} WHERE p.id = ? AND p.hidden = 0`,
+    args: [id],
+  });
+  return (res.rows[0] as unknown as Post) ?? null;
+}
+
 export async function createPost(
-  authorId: string,
-  authorName: string,
+  userId: string,
+  title: string,
   body: string,
   tag: string
 ) {
-  if (body.trim().length < 2) throw new Error('Post is too short.');
-  if (body.length > LIMITS.postBody) throw new Error('Post is too long.');
-  if ((await recentCount('forum_posts', authorId)) >= LIMITS.postsPerHour) {
-    throw new Error('You have posted a lot recently. Try again in a bit.');
-  }
+  await ensureSchema();
 
-  await client.execute({
-    sql: `INSERT INTO forum_posts (author_id, author_name, body, tag) VALUES (?,?,?,?)`,
-    args: [
-      authorId,
-      authorName.slice(0, LIMITS.name),
-      body.trim(),
-      TAGS.includes(tag) ? tag : 'General',
-    ],
+  const t = title.trim();
+  const b = body.trim();
+  if (t.length < 4) throw new Error('Give it a title of at least 4 characters.');
+  if (t.length > LIMITS.title) throw new Error('Title is too long.');
+  if (b.length < 2) throw new Error('Say a bit more than that.');
+  if (b.length > LIMITS.body) throw new Error('Post is too long.');
+
+  await rateCheck('forum_posts', userId, LIMITS.postsPerHour);
+
+  const res = await client.execute({
+    sql: `INSERT INTO forum_posts (author_id, title, body, tag)
+          VALUES (?,?,?,?) RETURNING id`,
+    args: [userId, t, b, TAGS.includes(tag) ? tag : 'General'],
   });
+
+  return Number((res.rows[0] as unknown as { id: number }).id);
 }
 
 export async function listComments(postId: number) {
   await ensureSchema();
   const res = await client.execute({
-    sql: `SELECT id, post_id, author_name, body, created_at
-          FROM forum_comments
-          WHERE post_id = ? AND hidden = 0
-          ORDER BY id ASC LIMIT 200`,
+    sql: `SELECT c.id, c.post_id, c.author_id, u.handle, u.avatar, c.body, c.created_at
+            FROM forum_comments c
+            JOIN forum_users u ON u.id = c.author_id
+           WHERE c.post_id = ? AND c.hidden = 0
+           ORDER BY c.id ASC LIMIT 300`,
     args: [postId],
   });
   return res.rows as unknown as Comment[];
 }
 
-export async function createComment(
-  postId: number,
-  authorId: string,
-  authorName: string,
-  body: string
-) {
-  if (body.trim().length < 1) throw new Error('Comment is empty.');
-  if (body.length > LIMITS.commentBody) throw new Error('Comment is too long.');
-  if ((await recentCount('forum_comments', authorId)) >= LIMITS.commentsPerHour) {
-    throw new Error('Slow down a moment.');
-  }
+export async function createComment(postId: number, userId: string, body: string) {
+  await ensureSchema();
+  const b = body.trim();
+  if (b.length < 1) throw new Error('Comment is empty.');
+  if (b.length > LIMITS.comment) throw new Error('Comment is too long.');
+
+  await rateCheck('forum_comments', userId, LIMITS.commentsPerHour);
 
   await client.execute({
-    sql: `INSERT INTO forum_comments (post_id, author_id, author_name, body) VALUES (?,?,?,?)`,
-    args: [postId, authorId, authorName.slice(0, LIMITS.name), body.trim()],
+    sql: 'INSERT INTO forum_comments (post_id, author_id, body) VALUES (?,?,?)',
+    args: [postId, userId, b],
   });
 }
 
-/** Returns the new like count and whether this author now likes it */
-export async function toggleLike(postId: number, authorId: string) {
+export async function toggleVote(postId: number, userId: string) {
   await ensureSchema();
 
   const existing = await client.execute({
-    sql: `SELECT 1 FROM forum_likes WHERE post_id = ? AND author_id = ?`,
-    args: [postId, authorId],
+    sql: 'SELECT 1 FROM forum_votes WHERE post_id = ? AND user_id = ?',
+    args: [postId, userId],
+  });
+  const had = existing.rows.length > 0;
+
+  await client.execute({
+    sql: had
+      ? 'DELETE FROM forum_votes WHERE post_id = ? AND user_id = ?'
+      : 'INSERT OR IGNORE INTO forum_votes (post_id, user_id) VALUES (?,?)',
+    args: [postId, userId],
   });
 
-  const liked = existing.rows.length > 0;
-
-  if (liked) {
-    await client.execute({
-      sql: `DELETE FROM forum_likes WHERE post_id = ? AND author_id = ?`,
-      args: [postId, authorId],
-    });
-  } else {
-    await client.execute({
-      sql: `INSERT OR IGNORE INTO forum_likes (post_id, author_id) VALUES (?,?)`,
-      args: [postId, authorId],
-    });
-  }
-
   const count = await client.execute({
-    sql: `SELECT COUNT(*) AS n FROM forum_likes WHERE post_id = ?`,
+    sql: 'SELECT COUNT(*) AS n FROM forum_votes WHERE post_id = ?',
     args: [postId],
   });
 
-  return { liked: !liked, likes: Number(count.rows[0]?.n ?? 0) };
+  return { voted: !had, votes: Number(count.rows[0]?.n ?? 0) };
 }
 
-/** Moderation — hides rather than deletes so nothing is lost */
-export async function hidePost(postId: number) {
-  await ensureSchema();
-  await client.execute({ sql: `UPDATE forum_posts SET hidden = 1 WHERE id = ?`, args: [postId] });
-}
-
-export async function hideComment(commentId: number) {
-  await ensureSchema();
-  await client.execute({ sql: `UPDATE forum_comments SET hidden = 1 WHERE id = ?`, args: [commentId] });
-}
-
-export async function likedPostIds(authorId: string) {
+export async function votedPostIds(userId: string) {
   await ensureSchema();
   const res = await client.execute({
-    sql: `SELECT post_id FROM forum_likes WHERE author_id = ?`,
-    args: [authorId],
+    sql: 'SELECT post_id FROM forum_votes WHERE user_id = ?',
+    args: [userId],
   });
   return res.rows.map((r) => Number((r as unknown as { post_id: number }).post_id));
+}
+
+/** Author can remove their own; moderators can remove anything */
+export async function removePost(postId: number, userId: string, isMod: boolean) {
+  await ensureSchema();
+  await client.execute({
+    sql: isMod
+      ? 'UPDATE forum_posts SET hidden = 1 WHERE id = ?'
+      : 'UPDATE forum_posts SET hidden = 1 WHERE id = ? AND author_id = ?',
+    args: isMod ? [postId] : [postId, userId],
+  });
+}
+
+export async function removeComment(commentId: number, userId: string, isMod: boolean) {
+  await ensureSchema();
+  await client.execute({
+    sql: isMod
+      ? 'UPDATE forum_comments SET hidden = 1 WHERE id = ?'
+      : 'UPDATE forum_comments SET hidden = 1 WHERE id = ? AND author_id = ?',
+    args: isMod ? [commentId] : [commentId, userId],
+  });
+}
+
+export async function report(reporterId: string, postId?: number, commentId?: number) {
+  await ensureSchema();
+  await client.execute({
+    sql: 'INSERT INTO forum_reports (post_id, comment_id, reporter_id) VALUES (?,?,?)',
+    args: [postId ?? null, commentId ?? null, reporterId],
+  });
+}
+
+export async function stats() {
+  await ensureSchema();
+  const res = await client.execute(`
+    SELECT
+      (SELECT COUNT(*) FROM forum_posts WHERE hidden = 0) AS posts,
+      (SELECT COUNT(*) FROM forum_comments WHERE hidden = 0) AS comments,
+      (SELECT COUNT(*) FROM forum_users WHERE banned = 0) AS members
+  `);
+  const r = res.rows[0] ?? {};
+  return {
+    posts: Number(r.posts ?? 0),
+    comments: Number(r.comments ?? 0),
+    members: Number(r.members ?? 0),
+  };
 }

@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import Providers from '@/components/Providers';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import ClientChrome from '@/components/ClientChrome';
 import './globals.css';
-import { Analytics } from '@vercel/analytics/next';
-
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -15,8 +14,8 @@ const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 export const metadata: Metadata = {
   metadataBase: new URL('https://leonida.city'),
   title: {
-    default: 'Lonida City | GTA 6',
-    template: '%s | Leonida City',
+    default: 'LEONIDA.CITY — Your Vice City Companion | GTA 6',
+    template: '%s | LEONIDA.CITY',
   },
   description:
     'Explore Vice City like never before. Interactive map, location lore, AI guide, countdown timer, and exclusive GTA 6 content.',
@@ -50,11 +49,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={inter.variable}>
       <body className="flex min-h-screen flex-col bg-black text-white antialiased">
+        <Providers>
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />
         <ClientChrome />
-        <Analytics />
+        </Providers>
+
         {ADSENSE_CLIENT && (
           <Script
             async

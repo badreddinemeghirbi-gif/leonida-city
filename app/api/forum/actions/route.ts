@@ -1,49 +1,68 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@/auth';
 import {
-  toggleLike,
+  toggleVote,
   listComments,
   createComment,
-  hidePost,
-  hideComment,
+  removePost,
+  removeComment,
+  report,
 } from '@/lib/forum';
+import { renameUser } from '@/lib/users';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
+  const payload = await req.json().catch(() => ({}));
+  const { action } = payload;
+
+  /* Reading comments needs no account */
+  if (action === 'comments') {
+    try {
+      return NextResponse.json({ comments: await listComments(Number(payload.postId)) });
+    } catch {
+      return NextResponse.json({ error: 'Could not load comments.' }, { status: 500 });
+    }
+  }
+
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Sign in first.' }, { status: 401 });
+  }
+  if (session.user.banned) {
+    return NextResponse.json({ error: 'Your account is suspended.' }, { status: 403 });
+  }
+
+  const uid = session.user.id;
+  const isMod = session.user.role === 'mod' || session.user.role === 'admin';
+
   try {
-    const payload = await req.json();
-    const { action } = payload;
-
     switch (action) {
-      case 'like': {
-        const { postId, authorId } = payload;
-        if (!postId || !authorId) throw new Error('Missing fields.');
-        return NextResponse.json(await toggleLike(Number(postId), String(authorId)));
-      }
-
-      case 'comments': {
-        const { postId } = payload;
-        return NextResponse.json({ comments: await listComments(Number(postId)) });
-      }
+      case 'vote':
+        return NextResponse.json(await toggleVote(Number(payload.postId), uid));
 
       case 'comment': {
-        const { postId, authorId, authorName, body } = payload;
-        if (!postId || !authorId || !authorName || !body) throw new Error('Missing fields.');
-        await createComment(Number(postId), String(authorId), String(authorName), String(body));
-        return NextResponse.json({ comments: await listComments(Number(postId)) });
+        await createComment(Number(payload.postId), uid, String(payload.body));
+        return NextResponse.json({ comments: await listComments(Number(payload.postId)) });
       }
 
-      /* Moderation — requires the admin key */
-      case 'hidePost':
-      case 'hideComment': {
-        if (!process.env.ADMIN_KEY || payload.key !== process.env.ADMIN_KEY) {
-          return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
-        }
-        if (action === 'hidePost') await hidePost(Number(payload.postId));
-        else await hideComment(Number(payload.commentId));
+      case 'removePost':
+        await removePost(Number(payload.postId), uid, isMod);
         return NextResponse.json({ ok: true });
-      }
+
+      case 'removeComment':
+        await removeComment(Number(payload.commentId), uid, isMod);
+        return NextResponse.json({
+          comments: await listComments(Number(payload.postId)),
+        });
+
+      case 'report':
+        await report(uid, payload.postId, payload.commentId);
+        return NextResponse.json({ ok: true });
+
+      case 'rename':
+        return NextResponse.json({ handle: await renameUser(uid, String(payload.handle)) });
 
       default:
         return NextResponse.json({ error: 'Unknown action.' }, { status: 400 });

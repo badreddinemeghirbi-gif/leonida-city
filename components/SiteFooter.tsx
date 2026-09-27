@@ -27,6 +27,7 @@ const NAV = [
   ['/news', 'News'],
   ['/forum', 'Forum'],
   ['/gallery', 'Gallery'],
+  ['/missions', 'Missions'],
   ['/cheats', 'Cheats'],
   ['/about', 'About'],
   ['/contact', 'Contact'],

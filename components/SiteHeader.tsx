@@ -12,6 +12,7 @@ const NAV = [
   { href: '/news', label: 'News' },
   { href: '/forum', label: 'Forum' },
   { href: '/gallery', label: 'Gallery' },
+  { href: '/missions', label: 'Missions' },
   { href: '/cheats', label: 'Cheats' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
