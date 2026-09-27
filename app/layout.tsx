@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 import Providers from '@/components/Providers';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex-1">{children}</div>
         <SiteFooter />
         <ClientChrome />
+        <Analytics />
         </Providers>
 
         {ADSENSE_CLIENT && (
